@@ -8,4 +8,8 @@ app.use(express.json());
 
 app.use('/api/upload', uploadRoutes);
 
+app.get("/", (req, res) => {
+  res.send("✅ LawPal Backend is running.");
+});
+
 module.exports = app;
