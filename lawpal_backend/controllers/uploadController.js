@@ -1,5 +1,6 @@
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
+const Document = require('../models/Document');
 
 exports.handleFileUpload = async (req, res) => {
   try {
@@ -8,14 +9,20 @@ exports.handleFileUpload = async (req, res) => {
     const buffer = fs.readFileSync(filePath);
     const data = await pdfParse(buffer);
 
-    // Optional: Save parsed text to database here
+    // Save to MongoDB
+    const savedDoc = await Document.create({
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      content: data.text
+    });
 
     res.status(200).json({
-      message: '✅ File uploaded and parsed successfully!',
-      content: data.text.slice(0, 1000) // limit for preview
+      message: '✅ File uploaded and saved successfully!',
+      documentId: savedDoc._id
     });
+
   } catch (err) {
     console.error("❌ Error:", err);
-    res.status(500).json({ error: 'Failed to parse the file.' });
+    res.status(500).json({ error: 'Failed to parse or save the file.' });
   }
 };
