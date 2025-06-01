@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  background-color: #f0f2f5;
+}
+
+.upload-form input {
+  margin: 1rem 0;
+}
+
+.upload-form button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
