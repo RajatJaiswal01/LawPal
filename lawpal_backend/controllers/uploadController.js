@@ -18,7 +18,8 @@ exports.handleFileUpload = async (req, res) => {
 
     res.status(200).json({
       message: '✅ File uploaded and saved successfully!',
-      documentId: savedDoc._id
+      documentId: savedDoc._id,
+      content: data.text
     });
 
   } catch (err) {
