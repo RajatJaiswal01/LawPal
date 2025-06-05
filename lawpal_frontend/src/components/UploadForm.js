@@ -5,6 +5,8 @@ const UploadForm = () => {
   const [file, setFile] = useState(null);
   const [parsedText, setParsedText] = useState('');
   const [message, setMessage] = useState('');
+  const [analysis, setAnalysis] = useState('');
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -38,6 +40,20 @@ const UploadForm = () => {
     }
   };
 
+  const handleAnalyze = async () => {
+  try {
+    const res = await axios.post('http://localhost:5000/api/analyze', {
+      content: parsedText,
+    });
+
+    setAnalysis(res.data.summary);
+  } catch (err) {
+    console.error(err);
+    setAnalysis('❌ Failed to get analysis.');
+  }
+};
+
+
   return (
     <div className="upload-form">
       <h2>📄 Upload Legal Document</h2>
@@ -51,6 +67,18 @@ const UploadForm = () => {
           <h3>🧾 Parsed Text Preview:</h3>
           <pre style={{ maxHeight: '300px', overflowY: 'scroll', backgroundColor: '#f9f9f9', padding: '10px' }}>
             {parsedText}
+          </pre>
+          <button onClick={handleAnalyze} style={{ marginTop: '10px' }}>
+            Analyze with AI
+          </button>
+        </div>
+      )}
+
+      {analysis && (
+        <div>
+          <h3>🧠 AI Legal Summary:</h3>
+          <pre style={{ background: '#f4f4f4', padding: '10px' }}>
+            {analysis}
           </pre>
         </div>
       )}
